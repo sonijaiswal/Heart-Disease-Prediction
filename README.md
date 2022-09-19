@@ -8,9 +8,3 @@
 -   3 - cd into project
 -   4 - pip install -r requirements.txt
 -   5 - python manage.py runserver
-
-# Tech Stack
-
--   Django
--   Postgres
--   Django REST Framework

@@ -12,15 +12,21 @@ import pickle
 import numpy as np
 
 # Load the Random Forest CLassifier model
-filename = 'rffff.pkl'
-model = pickle.load(open(filename, 'rb'))
+# log_model_file = 'logre_model.pkl'
+logre = pickle.load(open('logre_model.pkl', 'rb'))
+
+# knn_model_file = 'knn_model.pkl'
+knn = pickle.load(open('knn_model.pkl', 'rb'))
+
+# rf_model_file = 'rf_model.pkl'
+rf = pickle.load(open('rf_model.pkl', 'rb'))
 
 
 @login_required(login_url="login")
 def checkHeart(request):
     profile = request.user.profile
     form = HeartForm()
-
+    msg = ''
     if request.method == "POST":
         form = HeartForm(request.POST)
         if form.is_valid():
@@ -40,10 +46,34 @@ def checkHeart(request):
 
         data = np.array([[age, sex, cp, trestbps, chol, fbs,
                         restecg, thalach, exang, oldpeak, slope, ca, thal]])
-        my_prediction = model.predict(data)
-        print(">>>>>>>>>>...........................", my_prediction)
 
-    context = {'form': form}
+        result = ''
+        msg = ''
+        accuracy = ''
+        if 'predict1' in request.POST:
+            # for knn
+            result = knn.predict(data)
+
+        elif 'predict2' in request.POST:
+            # for logistic regression
+            result = logre.predict(data)
+
+        elif 'predict3' in request.POST:
+            # for random forest
+            result = rf.predict(data)
+
+        # result = model.predict(data)
+
+        if result == 1:
+            msg = "You have Chances of Heart Disease"
+
+        elif result == 0:
+            msg = "Great! You DON'T chances have Heart Disease."
+        print(msg)
+    context = {
+        'form': form,
+        'msg': msg
+    }
     return render(request, "projects/heart_form.html", context)
 
 

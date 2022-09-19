@@ -8,10 +8,13 @@
                 ><i class="im im-angle-left"></i
             ></a>
             <br />
-
+            {% if msg %}
+            <ul class="messagelist">{{ msg }}</li></ul>
+            {% endif %}
             <form class="form" method="POST">
                 {% csrf_token %} {% for field in form %}
-                <!-- Input:Text -->
+                
+
                 <div class="form__field">
                     <label for="formInput#text">{{field.label}}</label>
                     {{field}}
@@ -43,19 +46,19 @@
                     class="btn1 btn--sub btn--lg my-md"
                     type="submit"
                     name="predict1"
-                    value="predict1"
+                    value="KNN"
                 />
                 <input
                     class="btn2 btn--sub btn--lg my-md"
                     type="submit"
                     name="predict2"
-                    value="predict2"
+                    value="Logistic Regression"
                 />
                 <input
                     class="btn3 btn--sub btn--lg my-md"
                     type="submit"
                     name="predict3"
-                    value="predict3"
+                    value="Random Forest"
                 />
             </form>
         </div>

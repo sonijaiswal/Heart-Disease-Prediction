@@ -32,7 +32,7 @@ y = heart_df.target
 
 # splitting our dataset into training and testing for this we will use train_test_split library.
 x_train, x_test, y_train, y_test = train_test_split(
-    x, y, test_size=0.25, random_state=42)
+    x, y, test_size=0.2, random_state=42)
 
 # feature scaling
 scaler = StandardScaler()
@@ -44,7 +44,7 @@ x_test_scaler = scaler.fit_transform(x_test)
 # SVC_model= SVC()
 # RF_model= RandomForestClassifier(n_estimators=20)
 # DT_model= DecisionTreeClassifier()
-model = RandomForestClassifier(n_estimators=20)
+model = SVC()
 model.fit(x_train_scaler, y_train)
 y_pred = model.predict(x_test_scaler)
 p = model.score(x_test_scaler, y_test)
@@ -57,5 +57,5 @@ cm = confusion_matrix(y_test, y_pred)
 print(cm)
 
 # Creating a pickle file for the classifier
-filename = 'rffff.pkl'
+filename = 'svc_model.pkl'
 pickle.dump(model, open(filename, 'wb'))

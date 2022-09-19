@@ -1,3 +1,4 @@
+from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 import uuid
 
@@ -43,9 +44,9 @@ SLOPE_CHOICES = (
 )
 
 THAL_CHOICES = (
-    (0, 'Normal'),
-    (1, 'Fixed Defect'),
-    (2, 'Reversible Defect'),
+    (1, 'Normal'),
+    (2, 'Fixed Defect'),
+    (3, 'Reversible Defect'),
 )
 
 
@@ -63,7 +64,7 @@ class Heart(models.Model):
     restecg = models.IntegerField(choices=RESTECG_CHOICES, default=0)
     thalach = models.IntegerField(default=0, null=True, blank=True)
     exang = models.IntegerField(choices=EXANG_CHOICES, default=0)
-    oldpeak = models.FloatField(default=0, null=True, blank=True)
+    oldpeak = models.FloatField(default=0)
     slope = models.IntegerField(choices=SLOPE_CHOICES, default=0)
     ca = models.IntegerField(default=0, null=True, blank=True)
 

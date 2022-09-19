@@ -15,7 +15,7 @@ from sklearn.tree import DecisionTreeClassifier
 
 # loading and reading the dataset
 
-heart = pd.read_csv("heart_data.csv")
+heart = pd.read_csv("heart.csv")
 
 # creating a copy of dataset so that will not affect our original dataset.
 heart_df = heart.copy()
@@ -39,7 +39,11 @@ scaler = StandardScaler()
 x_train_scaler = scaler.fit_transform(x_train)
 x_test_scaler = scaler.fit_transform(x_test)
 
-# creating K-Nearest-Neighbor classifier
+# LR_model= LogisticRegression()
+# Knn_model= KNeighborsClassifier(n_neighbors = 5, metric = 'minkowski', p = 2)
+# SVC_model= SVC()
+# RF_model= RandomForestClassifier(n_estimators=20)
+# DT_model= DecisionTreeClassifier()
 model = RandomForestClassifier(n_estimators=20)
 model.fit(x_train_scaler, y_train)
 y_pred = model.predict(x_test_scaler)
@@ -53,5 +57,5 @@ cm = confusion_matrix(y_test, y_pred)
 print(cm)
 
 # Creating a pickle file for the classifier
-filename = 'rf1.pkl'
+filename = 'rffff.pkl'
 pickle.dump(model, open(filename, 'wb'))

@@ -12,7 +12,7 @@ import pickle
 import numpy as np
 
 # Load the Random Forest CLassifier model
-filename = 'rf1.pkl'
+filename = 'rffff.pkl'
 model = pickle.load(open(filename, 'rb'))
 
 

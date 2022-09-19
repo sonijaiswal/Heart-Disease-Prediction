@@ -7,6 +7,52 @@ from django.db.models.signals import post_save, post_delete
 from django.dispatch import receiver
 
 
+CP_CHOICES = (
+    (0, 'Typical Angina'),
+    (1, 'Atypical Angina'),
+    (2, 'Non-Anginal Pain'),
+    (3, 'Asymptomatic'),
+)
+
+FBS_CHOICES = (
+    (0, 'Fasting Blood Sugar < 120 mg/dl'),
+    (1, 'Fasting Blood Sugar > 120 mg/dl'),
+)
+
+RESTECG_CHOICES = (
+    (0, 'Normal'),
+    (1, 'Having ST-T wave abnormality'),
+    (2, 'Showing probable or definite left ventricular hypertrophy'),
+
+)
+
+EXANG_CHOICES = (
+    (0, 'No'),
+    (1, 'Yes'),
+
+
+)
+
+SEX_CHOICES = (
+    (0, 'Female'),
+    (1, 'Male'),
+
+)
+
+SLOPE_CHOICES = (
+    (0, 'Upsloping'),
+    (1, 'Flat'),
+    (2, 'Downsloping'),
+)
+
+THAL_CHOICES = (
+    (1, 'Normal'),
+    (2, 'Fixed Defect'),
+    (3, 'Reversible Defect'),
+)
+
+
+
 class Profile(models.Model):
     user = models.OneToOneField(
         User, on_delete=models.CASCADE, null=True, blank=True)
@@ -40,6 +86,35 @@ class Profile(models.Model):
         except:
             url = ''
         return url
+
+
+class Heart(models.Model):
+    owner = models.ForeignKey(
+        Profile, null=True, blank=True, on_delete=models.CASCADE)
+
+    created = models.DateTimeField(auto_now_add=True)
+    age = models.IntegerField(default=0, null=True, blank=True)
+    sex = models.IntegerField(choices=SEX_CHOICES, default=0)
+    cp = models.IntegerField(choices=CP_CHOICES, default=1)
+    trestbps = models.IntegerField(default=0, null=True, blank=True)
+    chol = models.IntegerField(default=0, null=True, blank=True)
+    fbs = models.IntegerField(choices=FBS_CHOICES, default=0)
+    restecg = models.IntegerField(choices=RESTECG_CHOICES, default=0)
+    thalach = models.IntegerField(default=0, null=True, blank=True)
+    exang = models.IntegerField(choices=EXANG_CHOICES, default=0)
+    oldpeak = models.FloatField(default=0)
+    slope = models.IntegerField(choices=SLOPE_CHOICES, default=0)
+    ca = models.IntegerField(default=0, null=True, blank=True)
+
+    thal = models.IntegerField(choices=THAL_CHOICES, default=0)
+
+    id = models.UUIDField(
+        default=uuid.uuid4, unique=True, primary_key=True, editable=False
+    )
+
+    # def __str__(self):
+    #     return self.id
+
 
 
 class Skill(models.Model):

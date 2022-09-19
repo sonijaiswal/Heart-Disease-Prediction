@@ -7,7 +7,7 @@ urlpatterns = [
 
     path('create-project/', views.createProject, name="create-project"),
 
-    path('check-heart/', views.checkHeart, name="check-heart"),
+    # path('check-heart/', views.checkHeart, name="check-heart"),
 
     path('update-project/<str:pk>/', views.updateProject, name="update-project"),
 

@@ -1,7 +1,23 @@
 from django.forms import ModelForm
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
-from .models import Profile, Skill, Message
+from .models import Profile, Skill, Message, Heart
+from django import forms
+
+
+class HeartForm(ModelForm):
+
+    class Meta:
+        model = Heart
+        fields = ['age', 'sex', 'cp', 'trestbps', 'chol',
+                  'fbs', 'restecg', 'thalach', 'exang', 'oldpeak', 'slope', 'ca', 'thal']
+
+    def __init__(self, *args, **kwargs):
+        super(HeartForm, self).__init__(*args, **kwargs)
+        self.fields['oldpeak'] = forms.FloatField(max_value=6, min_value=1)
+
+        for name, field in self.fields.items():
+            field.widget.attrs.update({'class': 'input'})
 
 
 class CustomUserCreationForm(UserCreationForm):

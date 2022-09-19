@@ -51,8 +51,8 @@ THAL_CHOICES = (
 
 
 class Heart(models.Model):
-    owner = models.ForeignKey(
-        Profile, null=True, blank=True, on_delete=models.CASCADE)
+    # owner = models.ForeignKey(
+    #     Profile, null=True, blank=True, on_delete=models.CASCADE)
 
     created = models.DateTimeField(auto_now_add=True)
     age = models.IntegerField(default=0, null=True, blank=True)

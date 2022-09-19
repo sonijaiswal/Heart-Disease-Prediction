@@ -212,17 +212,11 @@ def createMessage(request, pk):
     context = {'recipient': recipient, 'form': form}
     return render(request, 'users/message_form.html', context)
 
-
+######### ML works ########################
 # Load the Random Forest CLassifier model
-# log_model_file = 'logre_model.pkl'
 logre = pickle.load(open('logre_model.pkl', 'rb'))
-
-# knn_model_file = 'knn_model.pkl'
 knn = pickle.load(open('knn_model.pkl', 'rb'))
-
-# rf_model_file = 'rf_model.pkl'
 rf = pickle.load(open('rf_model.pkl', 'rb'))
-
 
 @login_required(login_url="login")
 def checkHeart(request):
@@ -253,15 +247,12 @@ def checkHeart(request):
         msg = ''
         accuracy = ''
         if 'predict1' in request.POST:
-            # for knn
             result = knn.predict(data)
 
         elif 'predict2' in request.POST:
-            # for logistic regression
             result = logre.predict(data)
 
         elif 'predict3' in request.POST:
-            # for random forest
             result = rf.predict(data)
 
         # result = model.predict(data)

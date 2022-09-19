@@ -89,8 +89,8 @@ class Profile(models.Model):
 
 
 class Heart(models.Model):
-    owner = models.ForeignKey(
-        Profile, null=True, blank=True, on_delete=models.CASCADE)
+    owner = models.OneToOneField(
+        Profile, on_delete=models.CASCADE, null=True, blank=True)
 
     age = models.IntegerField(default=0, null=True, blank=True)
     sex = models.IntegerField(choices=SEX_CHOICES, default=0)

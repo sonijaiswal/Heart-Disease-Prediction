@@ -2,7 +2,7 @@ from django.db.models.signals import post_save, post_delete
 from django.dispatch import receiver
 
 from django.contrib.auth.models import User
-from .models import Profile
+from .models import Profile, Heart
 
 from django.core.mail import send_mail
 from django.conf import settings
@@ -19,17 +19,12 @@ def createProfile(sender, instance, created, **kwargs):
             email=user.email,
             name=user.first_name,
         )
-
-        subject = 'Welcome !!!'
-        message = 'We are glad you are here!'
-
-        # send_mail(
-        #     subject,
-        #     message,
-        #     settings.EMAIL_HOST_USER,
-        #     [profile.email],
-        #     fail_silently=False,
-        # )
+def createHeart(sender, instance, created, **kwargs):
+    if created:
+        profile = instance
+        heart = Heart.objects.create(
+            owner = profile
+        )
 
 
 def updateUser(sender, instance, created, **kwargs):
@@ -54,3 +49,5 @@ def deleteUser(sender, instance, **kwargs):
 post_save.connect(createProfile, sender=User)
 post_save.connect(updateUser, sender=Profile)
 post_delete.connect(deleteUser, sender=Profile)
+
+post_save.connect(createHeart, sender=Profile)

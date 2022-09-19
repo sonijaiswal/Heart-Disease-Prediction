@@ -6,7 +6,7 @@ from django.contrib import messages
 from django.contrib.auth.models import User
 from django.urls import conf
 from django.db.models import Q
-from .models import Profile, Message
+from .models import Profile, Message, Heart
 from .forms import CustomUserCreationForm, ProfileForm, MessageForm, HeartForm
 from .utils import searchProfiles, paginateProfiles
 
@@ -71,6 +71,7 @@ def registerUser(request):
 
 
 def profiles(request):
+
     profiles, search_query = searchProfiles(request)
 
     custom_range, profiles = paginateProfiles(request, profiles, 3)
@@ -164,17 +165,36 @@ def createMessage(request, pk):
 
     context = {'recipient': recipient, 'form': form}
     return render(request, 'users/message_form.html', context)
+#################################################################
+
+def editHeart(request):
+    page = 'edit-heart'
+    profile = request.user.profile
+    heart = Heart.objects.get(owner=profile)
+    form = HeartForm(instance=heart)
+    if request.method == 'POST':
+        form = HeartForm(request.POST, instance=heart)
+        if form.is_valid():
+            form.save()
+
+        return redirect('account')
+
+    context = {'form': form,'page':page}
+    return render(request, 'users/heart_form.html', context)
+
 
 ######### ML works ########################
 # Load the Random Forest CLassifier model
-logre = pickle.load(open('logre_model.pkl', 'rb'))
-knn = pickle.load(open('knn_model.pkl', 'rb'))
-rf = pickle.load(open('rf_model.pkl', 'rb'))
+logre = pickle.load(open('./ml_models/logre_model.pkl', 'rb'))
+knn = pickle.load(open('./ml_models/knn_model.pkl', 'rb'))
+rf = pickle.load(open('./ml_models/rf_model.pkl', 'rb'))
 
 @login_required(login_url="login")
 def checkHeart(request):
     profile = request.user.profile
-    form = HeartForm()
+    heart = Heart.objects.get(owner=profile)
+
+    form = HeartForm(instance=heart)
     msg = ''
     if request.method == "POST":
         form = HeartForm(request.POST)
@@ -197,7 +217,6 @@ def checkHeart(request):
                         restecg, thalach, exang, oldpeak, slope, ca, thal]])
 
         result = ''
-        msg = ''
         accuracy = ''
         if 'predict1' in request.POST:
             result = knn.predict(data)
@@ -211,14 +230,16 @@ def checkHeart(request):
         # result = model.predict(data)
 
         if result == 1:
+            messages.error(request, 'You have Chances of Heart Disease')
             msg = "You have Chances of Heart Disease"
 
         elif result == 0:
+            messages.success(request, 'Great! You DON \'T chances have Heart Disease.')
             msg = "Great! You DON'T chances have Heart Disease."
-        print(msg)
+        
     context = {
         'form': form,
-        'msg': msg
+        'msg': None
     }
     return render(request, "users/heart_form.html", context)
 

@@ -21,7 +21,7 @@ urlpatterns = [
     # path('delete-skill/<str:pk>/', views.deleteSkill, name="delete-skill"),
 
     # path('create-heart-detail/', views.createDetailsForHeart, name="create-details-for-heart"),
-    # path('update-skill/<str:pk>/', views.updateSkill, name="update-skill"),
+    path('edit-heart/', views.editHeart, name="edit-heart"),
     # path('delete-skill/<str:pk>/', views.deleteSkill, name="delete-skill"),
 
     path('inbox/', views.inbox, name="inbox"),

@@ -11,14 +11,29 @@ class HeartForm(ModelForm):
         model = Heart
         fields = ['age', 'sex', 'cp', 'trestbps', 'chol',
                   'fbs', 'restecg', 'thalach', 'exang', 'oldpeak', 'slope', 'ca', 'thal']
+        labels = {
+            'age': 'Age',
+            'sex': 'Sex',
+            'cp':'Chest Pain Type(cp)',
+            'trestbps': 'Resting Blood Pressure(rbp)',
+            'chol': 'Serum Cholestoral(chol)',
+            'fbs': 'Fasting Blood Sugar(fbs)',
+            'restecg': 'Resting ElectroCardioGraphic(restecg)',
+            'thalach': 'Maximum Heart Rate Achieved(thalach)',
+            'exang': 'Exercise Enduced Angina(exang)',
+            'oldpeak': 'ST depression induced(oldpeak)',
+            'slope': 'the slope of the peak exercise ST segment(slope)',
+            'ca': 'number of major vessels(ca)',
+            'thal': 'Thalessemia(thal)',
+        }
 
     def __init__(self, *args, **kwargs):
         super(HeartForm, self).__init__(*args, **kwargs)
+        self.fields['oldpeak'] = forms.FloatField(max_value=6, min_value=1)
 
         for name, field in self.fields.items():
             field.widget.attrs.update({'class': 'input'})
             
-        self.fields['oldpeak'] = forms.FloatField(max_value=6, min_value=1)
 
 
 class CustomUserCreationForm(UserCreationForm):

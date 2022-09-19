@@ -1,7 +1,7 @@
 from django.forms import ModelForm
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
-from .models import Profile, Skill, Message, Heart
+from .models import Profile, Message, Heart
 from django import forms
 
 
@@ -14,10 +14,11 @@ class HeartForm(ModelForm):
 
     def __init__(self, *args, **kwargs):
         super(HeartForm, self).__init__(*args, **kwargs)
-        self.fields['oldpeak'] = forms.FloatField(max_value=6, min_value=1)
 
         for name, field in self.fields.items():
             field.widget.attrs.update({'class': 'input'})
+            
+        self.fields['oldpeak'] = forms.FloatField(max_value=6, min_value=1)
 
 
 class CustomUserCreationForm(UserCreationForm):
@@ -50,17 +51,17 @@ class ProfileForm(ModelForm):
             field.widget.attrs.update({'class': 'input'})
 
 
-class SkillForm(ModelForm):
-    class Meta:
-        model = Skill
-        fields = '__all__'
-        exclude = ['owner']
+# class SkillForm(ModelForm):
+#     class Meta:
+#         model = Skill
+#         fields = '__all__'
+#         exclude = ['owner']
 
-    def __init__(self, *args, **kwargs):
-        super(SkillForm, self).__init__(*args, **kwargs)
+#     def __init__(self, *args, **kwargs):
+#         super(SkillForm, self).__init__(*args, **kwargs)
 
-        for name, field in self.fields.items():
-            field.widget.attrs.update({'class': 'input'})
+#         for name, field in self.fields.items():
+#             field.widget.attrs.update({'class': 'input'})
 
 
 class MessageForm(ModelForm):

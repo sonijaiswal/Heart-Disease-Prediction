@@ -92,7 +92,6 @@ class Heart(models.Model):
     owner = models.ForeignKey(
         Profile, null=True, blank=True, on_delete=models.CASCADE)
 
-    created = models.DateTimeField(auto_now_add=True)
     age = models.IntegerField(default=0, null=True, blank=True)
     sex = models.IntegerField(choices=SEX_CHOICES, default=0)
     cp = models.IntegerField(choices=CP_CHOICES, default=1)
@@ -105,29 +104,24 @@ class Heart(models.Model):
     oldpeak = models.FloatField(default=0)
     slope = models.IntegerField(choices=SLOPE_CHOICES, default=0)
     ca = models.IntegerField(default=0, null=True, blank=True)
-
     thal = models.IntegerField(choices=THAL_CHOICES, default=0)
 
+    created = models.DateTimeField(auto_now_add=True)
     id = models.UUIDField(
         default=uuid.uuid4, unique=True, primary_key=True, editable=False
     )
 
-    # def __str__(self):
-    #     return self.id
+# class Skill(models.Model):
+#     owner = models.ForeignKey(
+#         Profile, on_delete=models.CASCADE, null=True, blank=True)
+#     name = models.CharField(max_length=200, blank=True, null=True)
+#     description = models.TextField(null=True, blank=True)
+#     created = models.DateTimeField(auto_now_add=True)
+#     id = models.UUIDField(default=uuid.uuid4, unique=True,
+#                           primary_key=True, editable=False)
 
-
-
-class Skill(models.Model):
-    owner = models.ForeignKey(
-        Profile, on_delete=models.CASCADE, null=True, blank=True)
-    name = models.CharField(max_length=200, blank=True, null=True)
-    description = models.TextField(null=True, blank=True)
-    created = models.DateTimeField(auto_now_add=True)
-    id = models.UUIDField(default=uuid.uuid4, unique=True,
-                          primary_key=True, editable=False)
-
-    def __str__(self):
-        return str(self.name)
+#     def __str__(self):
+#         return str(self.name)
 
 
 class Message(models.Model):

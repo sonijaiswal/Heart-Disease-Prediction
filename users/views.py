@@ -94,10 +94,11 @@ def userProfile(request, pk):
 def userAccount(request):
     profile = request.user.profile
 
-    skills = profile.skill_set.all()
-    projects = profile.project_set.all()
+    # skills = profile.skill_set.all()
+    # projects = profile.project_set.all()
+    
 
-    context = {'profile': profile, 'skills': skills, 'projects': projects}
+    context = {'profile': profile, 'skills': None, 'projects': None}
     return render(request, 'users/account.html', context)
 
 

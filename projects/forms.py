@@ -14,20 +14,6 @@ class HeartForm(ModelForm):
             'tags': forms.CheckboxSelectMultiple(),
         }
 
-# age = int(request.form['age'])
-# sex = request.form.get('sex')
-# cp = request.form.get('cp')
-# trestbps = int(request.form['trestbps'])
-# chol = int(request.form['chol'])
-# fbs = request.form.get('fbs')
-# restecg = int(request.form['restecg'])
-# thalach = int(request.form['thalach'])
-# exang = request.form.get('exang')
-# oldpeak = float(request.form['oldpeak'])
-# slope = request.form.get('slope')
-# ca = int(request.form['ca'])
-# thal = request.form.get('thal')
-
     def __init__(self, *args, **kwargs):
         super(HeartForm, self).__init__(*args, **kwargs)
 

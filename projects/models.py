@@ -4,11 +4,6 @@ import uuid
 from django.db.models.deletion import CASCADE
 from users.models import Profile
 
-# Create your models here.
-# <option value="1">Typical Angina</option>
-# <option value="2">Atypical Angina</option>
-# <option value="3">Non-Anginal Pain</option>
-# <option value="4">Asymptomatic</option>
 CP_CHOICES = (
     (0, 'Typical Angina'),
     (1, 'Atypical Angina'),
@@ -16,16 +11,10 @@ CP_CHOICES = (
     (3, 'Asymptomatic'),
 )
 
-# <option value="0">Fasting Blood Sugar < 120 mg/dl</option>
-# <option value="1">Fasting Blood Sugar > 120 mg/dl</option>
 FBS_CHOICES = (
     (0, 'Fasting Blood Sugar < 120 mg/dl'),
     (1, 'Fasting Blood Sugar > 120 mg/dl'),
 )
-
-# <option value="0">Normal</option>
-# <option value="1">Having ST-T wave abnormality</option>
-# <option value="2">Showing probable or definite left ventricular hypertrophy</option>
 
 RESTECG_CHOICES = (
     (0, 'Normal'),
@@ -33,9 +22,6 @@ RESTECG_CHOICES = (
     (2, 'Showing probable or definite left ventricular hypertrophy'),
 
 )
-
-# <option value="1">Yes</option>
-# <option value="0">No</option>
 
 EXANG_CHOICES = (
     (0, 'No'),
@@ -50,23 +36,11 @@ SEX_CHOICES = (
 
 )
 
-# <option value="1">Male</option>
-# <option value="0">Female</option>
-
-
-#   <option value="0">Upsloping</option>
-#   <option value="1">Flat</option>
-#   <option value="2">Downsloping</option>
-
 SLOPE_CHOICES = (
     (0, 'Upsloping'),
     (1, 'Flat'),
     (2, 'Downsloping'),
 )
-
-#   <option value="0">Normal</option>
-#   <option value="1">Fixed Defect</option>
-#   <option value="2">Reversible Defect</option>
 
 THAL_CHOICES = (
     (0, 'Normal'),
@@ -112,7 +86,7 @@ class Project(models.Model):
         null=True, blank=True, default="default.jpg")
     demo_link = models.CharField(max_length=2000, null=True, blank=True)
     source_link = models.CharField(max_length=2000, null=True, blank=True)
-    # tags = models.ManyToManyField("Tag", blank=True)
+    tags = models.ManyToManyField("Tag", blank=True)
     vote_total = models.IntegerField(default=0, null=True, blank=True)
     vote_ratio = models.IntegerField(default=0, null=True, blank=True)
     created = models.DateTimeField(auto_now_add=True)

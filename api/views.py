@@ -1,18 +1,19 @@
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from rest_framework.response import Response
-from .serializers import ProjectSerializer
-from projects.models import Project, Review, Tag
+from django.http import Http404
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status
+from .serializers import HeartSerializers
+from users.models import Heart
 
 
 @api_view(['GET'])
 def getRoutes(request):
 
     routes = [
-        {'GET': '/api/projects'},
-        {'GET': '/api/projects/id'},
-        {'POST': '/api/projects/id/vote'},
-
+        {'GET': '/api/hearts'},
         {'POST': '/api/users/token'},
         {'POST': '/api/users/token/refresh'},
     ]
@@ -20,47 +21,39 @@ def getRoutes(request):
 
 
 @api_view(['GET'])
-def getProjects(request):
-    projects = Project.objects.all()
-    serializer = ProjectSerializer(projects, many=True)
-    return Response(serializer.data)
-
-
-@api_view(['GET'])
-def getProject(request, pk):
-    project = Project.objects.get(id=pk)
-    serializer = ProjectSerializer(project, many=False)
-    return Response(serializer.data)
-
-
-@api_view(['POST'])
-@permission_classes([IsAuthenticated])
-def projectVote(request, pk):
-    project = Project.objects.get(id=pk)
+def getHeart(request):
     user = request.user.profile
-    data = request.data
-
-    review, created = Review.objects.get_or_create(
-        owner=user,
-        project=project,
-    )
-
-    review.value = data['value']
-    review.save()
-    project.getVoteCount
-
-    serializer = ProjectSerializer(project, many=False)
+    print(user)
+    heart = Heart.objects.get(owner=user)
+    serializer = HeartSerializers(heart,many=False)
     return Response(serializer.data)
 
+class HeartDetail(APIView):
 
-@api_view(['DELETE'])
-def removeTag(request):
-    tagId = request.data['tag']
-    projectId = request.data['project']
+    def get_object(self,request):
+        try:
+            user = request.user.profile
+            return Heart.objects.get(owner=user.username)
+        except Heart.DoesNotExist:
+            raise Http404
 
-    project = Project.objects.get(id=projectId)
-    tag = Tag.objects.get(id=tagId)
+    def get(self,request, format = None):
+        user = request.user.profile
+        heart = Heart.objects.get(owner=user)
+        serializer = HeartSerializers(heart)
+        return Response(serializer.data)
 
-    project.tags.remove(tag)
+    def put(self, request, format=None):
+        user = request.user.profile
+        heart = Heart.objects.get(owner=user)
+        serializer = HeartSerializers(heart, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    return Response('Tag was deleted!')
+    # def delete(self, request, pk, format=None):
+    #     user = request.user.profile
+    #     heart = Heart.objects.get(owner=user)
+    #     heart.delete()
+    #     return Response(status=status.HTTP_204_NO_CONTENT)

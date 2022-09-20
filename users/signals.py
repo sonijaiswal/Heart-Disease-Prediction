@@ -58,10 +58,12 @@ def updateHeart(sender, instance, created, **kwargs):
 
         data = np.array([[age, sex, cp, trestbps, chol, fbs,restecg, thalach, exang, oldpeak, slope, ca, thal]])
         
-        heart.result1 = ValuePredictor(data, knn)
-        heart.result2 = ValuePredictor(data, logre)
-        heart.result3 = ValuePredictor(data, rf)
-        heart.save()
+        result1 = ValuePredictor(data, knn)
+        result2 = ValuePredictor(data, logre)
+        result3 = ValuePredictor(data, rf)
+        print(result1)
+        Heart.objects.filter(owner=instance.owner).update(result1 = result1,result2=result2,result3=result3)
+        # heart.save()
 
 
 def updateUser(sender, instance, created, **kwargs):
@@ -87,5 +89,5 @@ post_save.connect(updateUser, sender=Profile)
 post_delete.connect(deleteUser, sender=Profile)
 
 post_save.connect(createHeart, sender=Profile)
-post_save.disconnect(updateHeart, sender=Heart)
+post_save.connect(updateHeart, sender=Heart)
 

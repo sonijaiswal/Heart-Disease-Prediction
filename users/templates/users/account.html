@@ -16,20 +16,21 @@
     }
 
     table tr {
-        background-color: #f8f8f8;
+        
         border: 1px solid #ddd;
         padding: 0.35em;
     }
 
     table th,
     table td {
-        padding: 0.625em;
-        text-align: center;
+        padding: 0.725em;
+        text-align: left;
     }
 
     table th {
+        background-color: #f8f8f8;
         font-size: 0.85em;
-        letter-spacing: 0.1em;
+        letter-spacing: 0.2em;
         text-transform: uppercase;
     }
 
@@ -80,11 +81,19 @@
         table td:last-child {
             border-bottom: 0;
         }
+       .center {
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+          
+        }
     }
 </style>
 <!-- Main Section -->
 <main class="settingsPage profile my-md">
     <div class="container">
+        <h1 class="text-center">Details</h1>
         <div class="layout">
             <div class="column column--1of3">
                 <div class="card text-center">
@@ -132,92 +141,102 @@
                             </li>
                             {% endif %}
                         </ul>
+
                     </div>
+
+
+
+
+                </div>
+                <div class="text-center">
+                    <a
+                        class="btn btn--main--outline btn--md my-md"
+                        name="genpdf"
+                        href="{% url 'report' %}"
+                    >Generate Report
+                    </a>
                 </div>
             </div>
             <div class="column column--2of3">
-                <!-- <div class="devInfo">
-                    <h3 class="devInfo__title">About Me</h3>
-                    <p class="devInfo__about">{{profile.bio}}</p>
-                </div> -->
-
                 <!--  -->
                 {% if heart %}
                 <!--  -->
                 <table>
-                    <caption>
-                        Medical Details
-                    </caption>
-                    <tbody>
+                    <thead>
+                        <th>Features</th>
+                        <th>Values</th>
+                    </thead>
+                    <tbody style=>
                         <tr>
-                            <th scope="col">Age</th>
+                            <td scope="col">Age</td>
                             <td data-label="Period">{{heart.age}}</td>
                         </tr>
                         <tr>
-                            <th scope="col">sex</th>
+                            <td scope="col">sex</td>
                             <td data-label="Period">
                                 {{heart.get_sex_display}}
                             </td>
                         </tr>
                         <tr>
-                            <th scope="col">cp:</th>
+                            <td scope="col">cp:</td>
                             <td data-label="Period">
                                 {{heart.get_cp_display}}
                             </td>
                         </tr>
                         <tr>
-                            <th scope="col">trestbps</th>
+                            <td scope="col">trestbps</td>
                             <td data-label="Period">{{heart.trestbps}}</td>
                         </tr>
                         <tr>
-                            <th scope="col">chol</th>
+                            <td scope="col">chol</td>
                             <td data-label="Period">{{heart.chol}}</td>
                         </tr>
                         <tr>
-                            <th scope="col">fbs</th>
+                            <td scope="col">fbs</td>
                             <td data-label="Period">
                                 {{heart.get_fbs_display}}
                             </td>
                         </tr>
                         <tr>
-                            <th scope="col">restecg</th>
+                            <td scope="col">restecg</td>
                             <td data-label="Period">
                                 {{heart.get_restecg_display}}
                             </td>
                         </tr>
                         <tr>
-                            <th scope="col">thalach</th>
+                            <td scope="col">thalach</td>
                             <td data-label="Period">{{heart.thalach}}</td>
                         </tr>
                         <tr>
-                            <th scope="col">exang</th>
+                            <td scope="col">exang</td>
                             <td data-label="Period">
                                 {{heart.get_exang_display}}
                             </td>
                         </tr>
                         <tr>
-                            <th scope="col">oldpeak</th>
+                            <td scope="col">oldpeak</td>
                             <td data-label="Period">{{heart.oldpeak}}</td>
                         </tr>
                         <tr>
-                            <th scope="col">slope</th>
+                            <td scope="col">slope</td>
                             <td data-label="Period">
                                 {{heart.get_slope_display}}
                             </td>
                         </tr>
                         <tr>
-                            <th scope="col">ca</th>
+                            <td scope="col">ca</td>
                             <td data-label="Period">{{heart.ca}}</td>
                         </tr>
                         <tr>
-                            <th scope="col">thal</th>
+                            <td scope="col">thal</td>
                             <td data-label="Period">
                                 {{heart.get_thal_display}}
                             </td>
                         </tr>
 
+
                         <tr>
-                            <th scope="col">Condition Using KNN</th>
+                            <th scope="col">Prediction Using KNN</th>
                             <th scope="col">
                                 {% if heart.result1 == 0 %}
                                 <!--  -->
@@ -229,7 +248,7 @@
                             </th>
                         </tr>
                         <tr>
-                            <th scope="col">Condition Using Logistic Regr</th>
+                            <th scope="col">Prediction Using Logistic Regr</th>
                             <th scope="col">
                                 {% if heart.result2 == 0 %}
                                 <!--  -->
@@ -241,7 +260,7 @@
                             </th>
                         </tr>
                         <tr>
-                            <th scope="col">Condition Using Random Forest</th>
+                            <th scope="col">Prediction Using Random Forest</th>
                             <th scope="col">
                                 {% if heart.result3 == 0 %}
                                 <!--  -->

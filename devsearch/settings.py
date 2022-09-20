@@ -28,7 +28,8 @@ INSTALLED_APPS = [
     'users.apps.UsersConfig',
     'rest_framework',
     'corsheaders',
-    'storages'
+    'storages',
+    'app.apps.AppConfig',
 
 ]
 

@@ -9,9 +9,6 @@ from django.db.models import Q
 from .models import Profile, Message, Heart
 from .forms import CustomUserCreationForm, ProfileForm, MessageForm, HeartForm
 
-import pickle
-import numpy as np
-
 def loginUser(request):
     page = 'login'
 
@@ -162,44 +159,12 @@ def createMessage(request, pk):
 
     context = {'recipient': recipient, 'form': form}
     return render(request, 'users/message_form.html', context)
-#################################################################
-
-# def editHeart(request):
-#     page = 'edit-heart'
-#     profile = request.user.profile
-#     heart = Heart.objects.get(owner=profile)
-#     form = HeartForm(instance=heart)
-#     if request.method == 'POST':
-#         form = HeartForm(request.POST, instance=heart)
-#         if form.is_valid():
-            
-#             form.save()
-
-
-#         return redirect('account')
-
-#     context = {'form': form,'page':page}
-#     return render(request, 'users/heart_form.html', context)
-
-
-######### ML works ########################
-# Load the Random Forest CLassifier model
-logre = pickle.load(open('./ml_models/logre_model.pkl', 'rb'))
-knn = pickle.load(open('./ml_models/knn_model.pkl', 'rb'))
-rf = pickle.load(open('./ml_models/rf_model.pkl', 'rb'))
-
-def ValuePredictor(input_data, algo):
-    result = algo.predict(input_data)
-    return result
 
 @login_required(login_url="login")
 def checkHeart(request):
     profile = request.user.profile
     heart = Heart.objects.get(owner=profile)
-    result1 = ''
-    result2 = ''
-    result3 = ''
-    accuracy=''
+
     form = HeartForm(instance=heart)
     if request.method == "POST":
         form = HeartForm(request.POST, instance=heart)
@@ -208,31 +173,6 @@ def checkHeart(request):
             heart.owner = profile
             form.save()
 
-            age = heart.age
-            sex = heart.sex
-            cp = heart.cp
-            trestbps = heart.trestbps
-            chol = heart.chol
-            fbs = heart.fbs
-            restecg = heart.restecg
-            thalach = heart.thalach
-            exang = heart.exang
-            oldpeak = heart.oldpeak
-            slope = heart.slope
-            ca = heart.ca
-            thal = heart.thal
-
-            data = np.array([[age, sex, cp, trestbps, chol, fbs,
-                            restecg, thalach, exang, oldpeak, slope, ca, thal]])
-                        
-            if 'predict1' in request.POST:
-                result1 = ValuePredictor(data, knn)
-                result2 = ValuePredictor(data, logre)
-                result3 = ValuePredictor(data, rf)
-            heart.result1 = result1
-            heart.result2 = result2
-            heart.result3 = result3
-            form.save()
         return redirect('account')  
     context = {
         'form': form,

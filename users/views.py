@@ -8,7 +8,6 @@ from django.urls import conf
 from django.db.models import Q
 from .models import Profile, Message, Heart
 from .forms import CustomUserCreationForm, ProfileForm, MessageForm, HeartForm
-# from .utils import searchProfiles, paginateProfiles
 
 import pickle
 import numpy as np

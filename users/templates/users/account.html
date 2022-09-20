@@ -1,5 +1,87 @@
 {% extends 'main.html' %} {% block content %}
 
+<style>
+    table {
+        border: 1px solid #ccc;
+        border-collapse: collapse;
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        table-layout: fixed;
+    }
+
+    table caption {
+        font-size: 1.5em;
+        margin: 0.5em 0 0.75em;
+    }
+
+    table tr {
+        background-color: #f8f8f8;
+        border: 1px solid #ddd;
+        padding: 0.35em;
+    }
+
+    table th,
+    table td {
+        padding: 0.625em;
+        text-align: center;
+    }
+
+    table th {
+        font-size: 0.85em;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+    }
+
+    @media screen and (max-width: 600px) {
+        table {
+            border: 0;
+        }
+
+        table caption {
+            font-size: 1.3em;
+        }
+
+        table thead {
+            border: none;
+            clip: rect(0 0 0 0);
+            height: 1px;
+            margin: -1px;
+            overflow: hidden;
+            padding: 0;
+            position: absolute;
+            width: 1px;
+        }
+
+        table tr {
+            border-bottom: 3px solid #ddd;
+            display: block;
+            margin-bottom: 0.625em;
+        }
+
+        table td {
+            border-bottom: 1px solid #ddd;
+            display: block;
+            font-size: 0.8em;
+            text-align: right;
+        }
+
+        table td::before {
+            /*
+          * aria-label has no advantage, it won't be read inside a table
+          content: attr(aria-label);
+          */
+            content: attr(data-label);
+            float: left;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        table td:last-child {
+            border-bottom: 0;
+        }
+    }
+</style>
 <!-- Main Section -->
 <main class="settingsPage profile my-md">
     <div class="container">
@@ -67,6 +149,99 @@
                         ><i class="im im-plus"></i> Edit</a
                     >
                 </div>
+
+                <!--  -->
+                {% if heart %}
+                <!--  -->
+                <table>
+                    <caption>
+                        Medical Details
+                    </caption>
+                    <tbody>
+                        <tr>
+                            <th scope="col">Age</th>
+                            <td data-label="Period">{{heart.age}}</td>
+                        </tr>
+                        <tr>
+                            <th scope="col">sex</th>
+                            <td data-label="Period">
+                                {{heart.get_sex_display}}
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="col">cp:</th>
+                            <td data-label="Period">
+                                {{heart.get_cp_display}}
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="col">trestbps</th>
+                            <td data-label="Period">{{heart.trestbps}}</td>
+                        </tr>
+                        <tr>
+                            <th scope="col">chol</th>
+                            <td data-label="Period">{{heart.chol}}</td>
+                        </tr>
+                        <tr>
+                            <th scope="col">fbs</th>
+                            <td data-label="Period">
+                                {{heart.get_fbs_display}}
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="col">restecg</th>
+                            <td data-label="Period">
+                                {{heart.get_restecg_display}}
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="col">thalach</th>
+                            <td data-label="Period">{{heart.thalach}}</td>
+                        </tr>
+                        <tr>
+                            <th scope="col">exang</th>
+                            <td data-label="Period">
+                                {{heart.get_exang_display}}
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="col">oldpeak</th>
+                            <td data-label="Period">{{heart.oldpeak}}</td>
+                        </tr>
+                        <tr>
+                            <th scope="col">slope</th>
+                            <td data-label="Period">
+                                {{heart.get_slope_display}}
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="col">ca</th>
+                            <td data-label="Period">{{heart.ca}}</td>
+                        </tr>
+                        <tr>
+                            <th scope="col">thal</th>
+                            <td data-label="Period">
+                                {{heart.get_thal_display}}
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <th scope="col">Condition</th>
+                            <th scope="col">
+                                {% if heart.condition == 0 %}
+                                <!--  -->
+                                <span>Healthy</span>
+                                {% elif heart.condition == 1 %}
+                                <span>You Have a chance of Heart Disease</span>
+
+                                {% endif %}
+                            </th>
+                        </tr>
+                    </tbody>
+                </table>
+                {% endif %}
+
+                <!--  -->
             </div>
         </div>
     </div>

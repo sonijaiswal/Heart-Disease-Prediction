@@ -106,6 +106,8 @@ class Heart(models.Model):
     ca = models.IntegerField(default=0, null=True, blank=True)
     thal = models.IntegerField(choices=THAL_CHOICES, default=0)
 
+    condition = models.IntegerField(default=0,null=True,blank=True)
+
     created = models.DateTimeField(auto_now_add=True)
     id = models.UUIDField(
         default=uuid.uuid4, unique=True, primary_key=True, editable=False

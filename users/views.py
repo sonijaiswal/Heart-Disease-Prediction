@@ -93,8 +93,10 @@ def userProfile(request, pk):
 @login_required(login_url='login')
 def userAccount(request):
     profile = request.user.profile
+    heart = Heart.objects.get(owner=profile)
+    form = HeartForm(instance=heart)
 
-    context = {'profile': profile, 'skills': None, 'projects': None}
+    context = {'profile': profile, 'form': form, 'heart': heart}
     return render(request, 'users/account.html', context)
 
 
@@ -170,7 +172,9 @@ def editHeart(request):
     if request.method == 'POST':
         form = HeartForm(request.POST, instance=heart)
         if form.is_valid():
+            
             form.save()
+
 
         return redirect('account')
 
@@ -192,7 +196,7 @@ def checkHeart(request):
     form = HeartForm(instance=heart)
     msg = ''
     if request.method == "POST":
-        form = HeartForm(request.POST)
+        form = HeartForm(request.POST, instance=heart)
         if form.is_valid():
             age = form.cleaned_data['age']
             sex = form.cleaned_data['sex']
@@ -207,20 +211,30 @@ def checkHeart(request):
             slope = form.cleaned_data['slope']
             ca = form.cleaned_data['ca']
             thal = form.cleaned_data['thal']
+#if form.is_valid():
+    # user = form.save(commit=False)
+    # user.username = user.username.lower()
+    # user.save()
+            data = np.array([[age, sex, cp, trestbps, chol, fbs,
+                            restecg, thalach, exang, oldpeak, slope, ca, thal]])
 
-        data = np.array([[age, sex, cp, trestbps, chol, fbs,
-                        restecg, thalach, exang, oldpeak, slope, ca, thal]])
+            result = ''
+            accuracy = ''
+            if 'predict1' in request.POST:
+                result = knn.predict(data)
 
-        result = ''
-        accuracy = ''
-        if 'predict1' in request.POST:
-            result = knn.predict(data)
+            elif 'predict2' in request.POST:
+                result = logre.predict(data)
 
-        elif 'predict2' in request.POST:
-            result = logre.predict(data)
+            elif 'predict3' in request.POST:
+                result = rf.predict(data)
+            print('>>>>>>>>>>>>>...........',result)
+            # form = form.save(commit=False)
+            heart.owner = profile
+            heart.condition=result
+            form.save()
 
-        elif 'predict3' in request.POST:
-            result = rf.predict(data)
+        # return redirect('account')
 
         # result = model.predict(data)
 

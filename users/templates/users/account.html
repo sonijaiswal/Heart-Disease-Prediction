@@ -136,19 +136,10 @@
                 </div>
             </div>
             <div class="column column--2of3">
-                <div class="devInfo">
+                <!-- <div class="devInfo">
                     <h3 class="devInfo__title">About Me</h3>
                     <p class="devInfo__about">{{profile.bio}}</p>
-                </div>
-
-                <div class="settings">
-                    <h3 class="settings__title">Edit Medical Details</h3>
-                    <a
-                        class="tag tag--pill tag--sub settings__btn tag--lg"
-                        href="{% url 'edit-heart' %}"
-                        ><i class="im im-plus"></i> Edit</a
-                    >
-                </div>
+                </div> -->
 
                 <!--  -->
                 {% if heart %}
@@ -226,12 +217,36 @@
                         </tr>
 
                         <tr>
-                            <th scope="col">Condition</th>
+                            <th scope="col">Condition Using KNN</th>
                             <th scope="col">
-                                {% if heart.condition == 0 %}
+                                {% if heart.result1 == 0 %}
                                 <!--  -->
                                 <span>Healthy</span>
-                                {% elif heart.condition == 1 %}
+                                {% elif heart.result1 == 1 %}
+                                <span>You Have a chance of Heart Disease</span>
+
+                                {% endif %}
+                            </th>
+                        </tr>
+                        <tr>
+                            <th scope="col">Condition Using Logistic Regr</th>
+                            <th scope="col">
+                                {% if heart.result2 == 0 %}
+                                <!--  -->
+                                <span>Healthy</span>
+                                {% elif heart.result2 == 1 %}
+                                <span>You Have a chance of Heart Disease</span>
+
+                                {% endif %}
+                            </th>
+                        </tr>
+                        <tr>
+                            <th scope="col">Condition Using Random Forest</th>
+                            <th scope="col">
+                                {% if heart.result3 == 0 %}
+                                <!--  -->
+                                <span>Healthy</span>
+                                {% elif heart.result3 == 1 %}
                                 <span>You Have a chance of Heart Disease</span>
 
                                 {% endif %}

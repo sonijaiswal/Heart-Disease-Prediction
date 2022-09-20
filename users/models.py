@@ -106,12 +106,16 @@ class Heart(models.Model):
     ca = models.IntegerField(default=0, null=True, blank=True)
     thal = models.IntegerField(choices=THAL_CHOICES, default=0)
 
-    condition = models.IntegerField(default=0,null=True,blank=True)
+    result1 = models.IntegerField(default=0,null=True,blank=True)
+    result2 = models.IntegerField(default=0,null=True,blank=True)
+    result3 = models.IntegerField(default=0,null=True,blank=True)
 
     created = models.DateTimeField(auto_now_add=True)
     id = models.UUIDField(
         default=uuid.uuid4, unique=True, primary_key=True, editable=False
     )
+    def __str__(self):
+        return str(self.owner)
 
 class Message(models.Model):
     sender = models.ForeignKey(

@@ -46,7 +46,7 @@ x_test_scaler = scaler.fit_transform(x_test)
 # rf_model= RandomForestClassifier(n_estimators=20)
 # dt_model= DecisionTreeClassifier()
 
-model = DecisionTreeClassifier()
+model = KNeighborsClassifier(n_neighbors=9, p=2, metric="euclidean")
 model.fit(x_train_scaler, y_train)
 y_pred = model.predict(x_test_scaler)
 p = model.score(x_test_scaler, y_test)
@@ -59,5 +59,5 @@ cm = confusion_matrix(y_test, y_pred)
 print(cm)
 
 # Creating a pickle file for the classifier
-filename = "dt_model.pkl"
+filename = "knn_model.pkl"
 pickle.dump(model, open(filename, "wb"))

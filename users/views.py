@@ -10,6 +10,9 @@ from django.urls import conf
 from .forms import CustomUserCreationForm, HeartForm, MessageForm, ProfileForm
 from .models import Heart, Message, Profile
 
+import numpy as np
+import pickle
+
 
 def loginUser(request):
     page = "login"
@@ -66,19 +69,6 @@ def registerUser(request):
 
     context = {"page": page, "form": form}
     return render(request, "users/login_register.html", context)
-
-
-# def profiles(request):
-
-#     profiles, search_query = searchProfiles(request)
-
-#     custom_range, profiles = paginateProfiles(request, profiles, 3)
-#     context = {
-#         "profiles": profiles,
-#         "search_query": search_query,
-#         "custom_range": custom_range,
-#     }
-#     return render(request, "users/profiles.html", context)
 
 
 def userProfile(request, pk):
@@ -138,8 +128,6 @@ def viewMessage(request, pk):
 
 
 def createMessage(request, pk):
-    recipient = Profile.objects.get(id=pk)
-    form = MessageForm()
 
     try:
         sender = request.user.profile
@@ -166,7 +154,7 @@ def createMessage(request, pk):
 
 
 @login_required(login_url="login")
-def checkHeart(request):
+def ediDetail(request):
     profile = request.user.profile
     heart = Heart.objects.get(owner=profile)
 
@@ -180,4 +168,84 @@ def checkHeart(request):
 
         return redirect("account")
     context = {"form": form, "msg": None}
+    return render(request, "users/heart_form.html", context)
+
+
+import pickle
+import numpy as np
+
+# Load the Random Forest CLassifier model
+# log_model_file = 'logre_model.pkl'
+logre = pickle.load(open("./ml_models/logre_model.pkl", "rb"))
+
+# knn_model_file = 'knn_model.pkl'
+knn = pickle.load(open("./ml_models/knn_model.pkl", "rb"))
+
+# rf_model_file = 'rf_model.pkl'
+rf = pickle.load(open("./ml_models/rf_model.pkl", "rb"))
+
+
+def checkHeart(request):
+    form = HeartForm()
+    msg = ""
+    if request.method == "POST":
+        form = HeartForm(request.POST)
+        if form.is_valid():
+            age = form.cleaned_data["age"]
+            sex = form.cleaned_data["sex"]
+            cp = form.cleaned_data["cp"]
+            trestbps = form.cleaned_data["trestbps"]
+            chol = form.cleaned_data["chol"]
+            fbs = form.cleaned_data["fbs"]
+            restecg = form.cleaned_data["restecg"]
+            thalach = form.cleaned_data["thalach"]
+            exang = form.cleaned_data["exang"]
+            oldpeak = form.cleaned_data["oldpeak"]
+            slope = form.cleaned_data["slope"]
+            ca = form.cleaned_data["ca"]
+            thal = form.cleaned_data["thal"]
+
+        data = np.array(
+            [
+                [
+                    age,
+                    sex,
+                    cp,
+                    trestbps,
+                    chol,
+                    fbs,
+                    restecg,
+                    thalach,
+                    exang,
+                    oldpeak,
+                    slope,
+                    ca,
+                    thal,
+                ]
+            ]
+        )
+
+        result = ""
+        msg = ""
+        accuracy = ""
+        if "predict1" in request.POST:
+            # for knn
+            result = knn.predict(data)
+
+        elif "predict2" in request.POST:
+            # for logistic regression
+            result = logre.predict(data)
+
+        elif "predict3" in request.POST:
+            # for random forest
+            result = rf.predict(data)
+
+        # result = model.predict(data)
+
+        if result == 1:
+            messages.success(request, "You have Chances of Heart Disease!")
+        elif result == 0:
+            messages.success(request, "Great! You DON'T chances have Heart Disease.")
+        print(msg)
+    context = {"form": form, "msg": msg}
     return render(request, "users/heart_form.html", context)

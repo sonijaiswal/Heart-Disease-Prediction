@@ -6,6 +6,7 @@
         <a href="" class="header__logo">
             <img src="" alt="" hidden />
         </a>
+
         <nav class="header__nav">
             <input type="checkbox" id="responsive-menu" />
             <label for="responsive-menu" class="toggle-menu">
@@ -18,13 +19,14 @@
                 <li class="header__menuItem">
                     <a href="{% url 'account' %}">Dashboard</a>
                 </li>
-                <li class="header__menuItem">
-                    <a href="{% url 'check-heart' %}">Check</a>
-                </li>
+
                 <li class="header__menuItem">
                     <a href="{% url 'logout' %}" class="btn btn--sub">Logout</a>
                 </li>
                 {% else %}
+                <li class="header__menuItem">
+                    <a href="{% url 'check-heart' %}">Check</a>
+                </li>
                 <li class="header__menuItem">
                     <a href="{% url 'login' %}" class="btn btn--sub"
                         >Login/Sign Up</a

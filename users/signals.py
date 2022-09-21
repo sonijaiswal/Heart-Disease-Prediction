@@ -92,7 +92,7 @@ def updateHeart(sender, instance, created, **kwargs):
         knn_res = ValuePredictor(data, knn)
         logre_res = ValuePredictor(data, logre)
         rf_res = ValuePredictor(data, rf)
-        # print(result1, result2, result3)
+        print("We are glad you are here!")
         Heart.objects.filter(owner=instance.owner).update(
             owner=instance.owner, result1=knn_res, result2=logre_res, result3=rf_res
         )

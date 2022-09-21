@@ -36,13 +36,15 @@ class HeartForm(ModelForm):
             "exang": "Exercise Enduced Angina(exang)",
             "oldpeak": "ST depression induced(oldpeak)",
             "slope": "the slope of the peak exercise ST segment(slope)",
-            "ca": "number of major vessels(ca)",
+            "ca": "number of major vessels(ca)",  # number of major vessels (0-3) colored by flourosopy
             "thal": "Thalessemia(thal)",
         }
 
     def __init__(self, *args, **kwargs):
         super(HeartForm, self).__init__(*args, **kwargs)
         self.fields["oldpeak"] = forms.FloatField(max_value=100, min_value=0)
+        self.fields["ca"] = forms.FloatField(max_value=3, min_value=0)
+        self.fields["age"] = forms.FloatField(max_value=150, min_value=0)
 
         for name, field in self.fields.items():
             field.widget.attrs.update({"class": "input"})

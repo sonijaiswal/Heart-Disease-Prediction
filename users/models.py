@@ -99,7 +99,12 @@ class Heart(models.Model):
     exang = models.IntegerField(choices=EXANG_CHOICES, default=0)
     oldpeak = models.FloatField(default=0)
     slope = models.IntegerField(choices=SLOPE_CHOICES, default=0)
-    ca = models.IntegerField(default=0, null=True, blank=True)
+    ca = models.IntegerField(
+        default=0,
+        null=True,
+        blank=True,
+        help_text="Major vessels (0-3) colored by flourosopy",
+    )
     thal = models.IntegerField(choices=THAL_CHOICES, default=0)
 
     result1 = models.IntegerField(default=0, null=True, blank=True)

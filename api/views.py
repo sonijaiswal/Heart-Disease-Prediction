@@ -1,43 +1,43 @@
-from rest_framework.decorators import api_view, permission_classes
-from rest_framework.permissions import IsAuthenticated, IsAdminUser
-from rest_framework.response import Response
 from django.http import Http404
-from rest_framework.views import APIView
-from rest_framework.response import Response
 from rest_framework import status
-from .serializers import HeartSerializers
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import IsAdminUser, IsAuthenticated
+from rest_framework.response import Response
+from rest_framework.views import APIView
 from users.models import Heart
 
+from .serializers import HeartSerializers
 
-@api_view(['GET'])
+
+@api_view(["GET"])
 def getRoutes(request):
 
     routes = [
-        {'GET': '/api/hearts'},
-        {'POST': '/api/users/token'},
-        {'POST': '/api/users/token/refresh'},
+        {"GET": "/api/hearts"},
+        {"POST": "/api/users/token"},
+        {"POST": "/api/users/token/refresh"},
     ]
     return Response(routes)
 
 
-@api_view(['GET'])
+@api_view(["GET"])
 def getHeart(request):
     user = request.user.profile
     print(user)
     heart = Heart.objects.get(owner=user)
-    serializer = HeartSerializers(heart,many=False)
+    serializer = HeartSerializers(heart, many=False)
     return Response(serializer.data)
 
-class HeartDetail(APIView):
 
-    def get_object(self,request):
+class HeartDetail(APIView):
+    def get_object(self, request):
         try:
             user = request.user.profile
             return Heart.objects.get(owner=user.username)
         except Heart.DoesNotExist:
             raise Http404
 
-    def get(self,request, format = None):
+    def get(self, request, format=None):
         user = request.user.profile
         heart = Heart.objects.get(owner=user)
         serializer = HeartSerializers(heart)

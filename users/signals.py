@@ -1,28 +1,28 @@
-from django.db.models.signals import post_save, post_delete,pre_save
+import pickle
+
+import numpy as np
+from django.conf import settings
+from django.contrib.auth.models import User
+from django.core.mail import send_mail
+from django.db.models.signals import post_delete, post_save, pre_save
 from django.dispatch import receiver
 
-from django.contrib.auth.models import User
-from .models import Profile, Heart
-
-from django.core.mail import send_mail
-from django.conf import settings
-
-import pickle
-import numpy as np
+from .models import Heart, Profile
 
 # @receiver(post_save, sender=Profile)
 
 ######### ML works ########################
 # Load the Random Forest CLassifier model
-logre = pickle.load(open('./ml_models/logre_model.pkl', 'rb'))
-knn = pickle.load(open('./ml_models/knn_model.pkl', 'rb'))
-rf = pickle.load(open('./ml_models/rf_model.pkl', 'rb'))
+logre = pickle.load(open("./ml_models/logre_model.pkl", "rb"))
+knn = pickle.load(open("./ml_models/knn_model.pkl", "rb"))
+rf = pickle.load(open("./ml_models/rf_model.pkl", "rb"))
+
 
 def ValuePredictor(input_data, algo):
     result = algo.predict(input_data)
     return result
 
-    
+
 def createProfile(sender, instance, created, **kwargs):
     if created:
         user = instance
@@ -32,10 +32,12 @@ def createProfile(sender, instance, created, **kwargs):
             email=user.email,
             name=user.first_name,
         )
+
+
 def createHeart(sender, instance, created, **kwargs):
     if created:
         profile = instance
-        heart = Heart.objects.create(owner = profile)
+        heart = Heart.objects.create(owner=profile)
 
 
 def updateHeart(sender, instance, created, **kwargs):
@@ -56,13 +58,33 @@ def updateHeart(sender, instance, created, **kwargs):
         ca = heart.ca
         thal = heart.thal
 
-        data = np.array([[age, sex, cp, trestbps, chol, fbs,restecg, thalach, exang, oldpeak, slope, ca, thal]])
-        
+        data = np.array(
+            [
+                [
+                    age,
+                    sex,
+                    cp,
+                    trestbps,
+                    chol,
+                    fbs,
+                    restecg,
+                    thalach,
+                    exang,
+                    oldpeak,
+                    slope,
+                    ca,
+                    thal,
+                ]
+            ]
+        )
+
         result1 = ValuePredictor(data, knn)
         result2 = ValuePredictor(data, logre)
         result3 = ValuePredictor(data, rf)
         print(result1)
-        Heart.objects.filter(owner=instance.owner).update(result1 = result1,result2=result2,result3=result3)
+        Heart.objects.filter(owner=instance.owner).update(
+            result1=result1, result2=result2, result3=result3
+        )
         # heart.save()
 
 
@@ -84,10 +106,10 @@ def deleteUser(sender, instance, **kwargs):
     except:
         pass
 
+
 post_save.connect(createProfile, sender=User)
 post_save.connect(updateUser, sender=Profile)
 post_delete.connect(deleteUser, sender=Profile)
 
 post_save.connect(createHeart, sender=Profile)
 post_save.connect(updateHeart, sender=Heart)
-

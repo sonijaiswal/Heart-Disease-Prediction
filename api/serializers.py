@@ -9,8 +9,9 @@ class ProfileSerializer(serializers.ModelSerializer):
 
 
 class HeartSerializers(serializers.ModelSerializer):
-    owner = ProfileSerializer(many=False)
+    # owner = ProfileSerializer(many=False)
 
     class Meta:
         model = Heart
-        fields = "__all__"
+        # fields = "__all__"
+        exclude = ("id", "owner")

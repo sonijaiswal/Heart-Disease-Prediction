@@ -33,6 +33,17 @@ def createProfile(sender, instance, created, **kwargs):
             name=user.first_name,
         )
 
+        subject = "Welcome to the Website"
+        message = "We are glad you are here!"
+
+        send_mail(
+            subject,
+            message,
+            settings.EMAIL_HOST_USER,
+            [profile.email],
+            fail_silently=False,
+        )
+
 
 def createHeart(sender, instance, created, **kwargs):
     if created:
@@ -78,12 +89,12 @@ def updateHeart(sender, instance, created, **kwargs):
             ]
         )
 
-        result1 = ValuePredictor(data, knn)
-        result2 = ValuePredictor(data, logre)
-        result3 = ValuePredictor(data, rf)
-        print(result1)
+        knn_res = ValuePredictor(data, knn)
+        logre_res = ValuePredictor(data, logre)
+        rf_res = ValuePredictor(data, rf)
+        # print(result1, result2, result3)
         Heart.objects.filter(owner=instance.owner).update(
-            result1=result1, result2=result2, result3=result3
+            owner=instance.owner, result1=knn_res, result2=logre_res, result3=rf_res
         )
         # heart.save()
 

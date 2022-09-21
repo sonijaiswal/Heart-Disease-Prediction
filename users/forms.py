@@ -42,7 +42,7 @@ class HeartForm(ModelForm):
 
     def __init__(self, *args, **kwargs):
         super(HeartForm, self).__init__(*args, **kwargs)
-        self.fields["oldpeak"] = forms.FloatField(max_value=6, min_value=1)
+        self.fields["oldpeak"] = forms.FloatField(max_value=100, min_value=0)
 
         for name, field in self.fields.items():
             field.widget.attrs.update({"class": "input"})

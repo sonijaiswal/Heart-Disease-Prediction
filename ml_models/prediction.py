@@ -31,9 +31,7 @@ x = heart_df.drop(columns="target")
 y = heart_df.target
 
 # splitting our dataset into training and testing for this we will use train_test_split library.
-x_train, x_test, y_train, y_test = train_test_split(
-    x, y, test_size=0.2, random_state=42
-)
+x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.2, random_state=2)
 
 # feature scaling
 scaler = StandardScaler()
@@ -41,12 +39,22 @@ x_train_scaler = scaler.fit_transform(x_train)
 x_test_scaler = scaler.fit_transform(x_test)
 
 
-# knn_model= KNeighborsClassifier(n_neighbors = 5, metric = 'minkowski', p = 2)
-# svc_model= SVC()
-# SVC(kernel='linear', max_iter=1000, C=10, probability=True)
-# rf_model= RandomForestClassifier(n_estimators=20)
-# RandomForestClassifier(random_state=101)
-model = RandomForestClassifier(n_estimators=20)
+# knn_model= KNeighborsClassifier(n_neighbors = 5, metric = 'minkowski', p = 2) 88.52%
+# svc_model= SVC() 83.61%
+# SVC(kernel='linear', max_iter=1000, C=10, probability=True) 83.61%
+
+
+# rf_model= RandomForestClassifier(n_estimators=20) 91.8%
+
+model = RandomForestClassifier(
+    criterion="gini",
+    max_depth=7,
+    max_features="sqrt",
+    min_samples_leaf=2,
+    min_samples_split=4,
+    n_estimators=180,
+)
+
 model.fit(x_train_scaler, y_train)
 y_pred = model.predict(x_test_scaler)
 p = model.score(x_test_scaler, y_test)

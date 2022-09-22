@@ -6,5 +6,16 @@ from .models import Heart, Message, Profile
 
 
 admin.site.register(Profile)
-admin.site.register(Heart)
+# admin.site.register(Heart)
+
 admin.site.register(Message)
+
+
+@admin.register(Heart)
+class HeartAdmin(admin.ModelAdmin):
+    list_display = (
+        "owner",
+        "result1",
+        "result2",
+        "result3",
+    )

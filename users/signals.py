@@ -105,9 +105,9 @@ def updateHeart(sender, instance, created, **kwargs):
             result3=rf_res[0],
         )
 
-        import time
+        # import time
 
-        time.sleep(4)
+        # time.sleep(4)
 
         print("====================================================")
         print("====================================================")

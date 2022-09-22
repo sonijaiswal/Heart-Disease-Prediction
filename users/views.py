@@ -176,7 +176,7 @@ import numpy as np
 
 # Load the Random Forest CLassifier model
 # log_model_file = 'logre_model.pkl'
-logre = pickle.load(open("./ml_models/logre_model.pkl", "rb"))
+svc = pickle.load(open("./ml_models/svc_model.pkl", "rb"))
 
 # knn_model_file = 'knn_model.pkl'
 knn = pickle.load(open("./ml_models/knn_model.pkl", "rb"))
@@ -234,7 +234,7 @@ def checkHeart(request):
 
         elif "predict2" in request.POST:
             # for logistic regression
-            result = logre.predict(data)
+            result = svc.predict(data)
 
         elif "predict3" in request.POST:
             # for random forest

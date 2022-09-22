@@ -30,9 +30,6 @@ print(heart_df.head())
 x = heart_df.drop(columns="target")
 y = heart_df.target
 
-print(x)
-print(y)
-
 # splitting our dataset into training and testing for this we will use train_test_split library.
 x_train, x_test, y_train, y_test = train_test_split(
     x, y, test_size=0.2, random_state=42
@@ -43,13 +40,13 @@ scaler = StandardScaler()
 x_train_scaler = scaler.fit_transform(x_train)
 x_test_scaler = scaler.fit_transform(x_test)
 
-# logre_model= LogisticRegression()
+
 # knn_model= KNeighborsClassifier(n_neighbors = 5, metric = 'minkowski', p = 2)
 # svc_model= SVC()
+# SVC(kernel='linear', max_iter=1000, C=10, probability=True)
 # rf_model= RandomForestClassifier(n_estimators=20)
-# dt_model= DecisionTreeClassifier()
-
-model = KNeighborsClassifier(n_neighbors=5, metric="minkowski", p=2)
+# RandomForestClassifier(random_state=101)
+model = RandomForestClassifier(n_estimators=20)
 model.fit(x_train_scaler, y_train)
 y_pred = model.predict(x_test_scaler)
 p = model.score(x_test_scaler, y_test)
@@ -61,6 +58,7 @@ print("Accuracy: {}%\n".format(round((accuracy_score(y_test, y_pred) * 100), 2))
 cm = confusion_matrix(y_test, y_pred)
 print(cm)
 
-# # Creating a pickle file for the classifier
-# filename = "dt_model.pkl"
-# pickle.dump(model, open(filename, "wb"))
+# Creating a pickle file for the classifier
+# filename = "svc_model.pkl"
+filename = "rf_model.pkl"
+pickle.dump(model, open(filename, "wb"))

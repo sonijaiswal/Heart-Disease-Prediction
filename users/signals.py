@@ -1,5 +1,4 @@
 import pickle
-
 import numpy as np
 from django.conf import settings
 from django.contrib.auth.models import User
@@ -13,8 +12,8 @@ from .models import Heart, Profile
 
 ######### ML works ########################
 # Load the Random Forest CLassifier model
-logre = pickle.load(open("./ml_models/logre_model.pkl", "rb"))
 knn = pickle.load(open("./ml_models/knn_model.pkl", "rb"))
+svc = pickle.load(open("./ml_models/svc_model.pkl", "rb"))
 rf = pickle.load(open("./ml_models/rf_model.pkl", "rb"))
 
 
@@ -90,19 +89,19 @@ def updateHeart(sender, instance, created, **kwargs):
         )
 
         knn_res = ValuePredictor(data, knn)
-        logre_res = ValuePredictor(data, logre)
+        svc_res = ValuePredictor(data, svc)
         rf_res = ValuePredictor(data, rf)
         print("We are glad you are here!")
         print("====================================================")
         print("====================================================")
         print("------------ KNN Before   ------------->", knn_res[0])
-        print("------------ Logre Before ------------->", logre_res[0])
+        print("------------ SVC Before ------------->", svc_res[0])
         print("------------ RF Before    ------------->", rf_res[0])
 
         Heart.objects.filter(owner=instance.owner).update(
             owner=instance.owner,
             result1=knn_res[0],
-            result2=logre_res[0],
+            result2=svc_res[0],
             result3=rf_res[0],
         )
 
@@ -113,7 +112,7 @@ def updateHeart(sender, instance, created, **kwargs):
         print("====================================================")
         print("====================================================")
         print("------------ KNN After   ------------->", heart.result1)
-        print("------------ Logre After ------------->", heart.result2)
+        print("------------ SVC After ------------->", heart.result2)
         print("------------ RF After    ------------->", heart.result3)
 
         print("====================================================")

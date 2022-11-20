@@ -159,7 +159,7 @@ EMAIL_HOST = "smtp.gmail.com"
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = "pragash.171540@ncit.edu.np"
-EMAIL_HOST_PASSWORD = "yEBRdA5hDx2rQtX"
+EMAIL_HOST_PASSWORD = "yEanjxksoieddsaasdfa"
 
 
 # Static files (CSS, JavaScript, Images)

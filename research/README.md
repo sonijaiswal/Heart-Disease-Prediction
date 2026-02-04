@@ -9,5 +9,5 @@
 
 *If you want to view the deployed model, than check out the following links mentioned below :*
 
-- **Github** - *[https://github.com/asthasharma98/Heart-Disease-Prediction-Deployment](https://github.com/asthasharma98/Heart-Disease-Prediction-Deployment)*
+- **Github** - *[https://github.com/sonijaiswal/Heart-Disease-Prediction-Deployment](https://github.com/sonijaiswal/Heart-Disease-Prediction-Deployment)*
 - **Web App** - *[https://heart-disease-predictor-flask.herokuapp.com/](https://heart-disease-predictor-flask.herokuapp.com/)*
